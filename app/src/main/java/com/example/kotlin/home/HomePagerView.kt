@@ -4,18 +4,18 @@ import android.content.Context
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.Log
-import com.example.huangyaping.yhwebtest.R
+import com.example.core.base.BaseLayout
 import com.example.kotlin.L
-import com.example.kotlin.base.BaseLayout
-import com.example.kotlin.base.BaseResult
+import com.example.kotlin.R
 import com.example.kotlin.home.adapter.HomeListAdapter
-import com.example.kotlin.home.api.HomeApi
 import com.example.kotlin.home.bean.HomeListData
-import com.example.kotlin.net.BaseSubscriber
-import com.example.kotlin.net.OKHttpManager
+import com.example.kotlin.home.bean.UserData
+import com.example.core.base.view.HeaderView
 import com.lidroid.xutils.view.annotation.ViewInject
-import rx.android.schedulers.AndroidSchedulers
-import rx.schedulers.Schedulers
+import retrofit2.Call
+import retrofit2.GsonConverterFactory
+import retrofit2.Retrofit
+import retrofit2.http.GET
 import java.util.*
 
 /**
@@ -42,10 +42,13 @@ class HomePagerView(context: Context) : BaseLayout(context) {
 
         mRecyclerView.layoutManager = LinearLayoutManager(context)
 
+        setTitle("首页")
+
         val userList = ArrayList<String>()
         userList.add("测试数据")
 
         asList(1, 2, 3)
+
     }
 
     fun <T> asList(vararg a: T): ArrayList<T> {
@@ -189,20 +192,52 @@ class HomePagerView(context: Context) : BaseLayout(context) {
     }
 
     fun requestData() {
-        OKHttpManager.getInstance()?.create(HomeApi::class.java)?.homeList()
-                ?.subscribeOn(Schedulers.io())
-                ?.unsubscribeOn(Schedulers.io())
-                ?.observeOn(AndroidSchedulers.mainThread())
-                ?.subscribe(object : BaseSubscriber<HomeListData>() {
 
-                    override fun onFailure(code: Int, msg: String) {
-
-                    }
-
-                    override fun onSuccess(bean: BaseResult<HomeListData>?) {
-                    }
-
-                })
+//        Service.getUserList.readUserInfo()
+//                .subscribeOn(Schedulers.io())
+//                .unsubscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(object : BaseSubscriber<List<UserData>>(){
+//                    override fun onSuccess(bean: BaseResult<List<UserData>>?) {
+//                        L.i("b" + bean)
+//                    }
+//
+//                    override fun onFailure(code: Int, msg: String) {
+//                    }
+//
+//                })
     }
 }
 
+interface APIService {
+
+    @GET("/repos/enbandari/Kotlin-Tutorials/stargazers")
+    fun readUserInfo(): Call<List<UserData>>
+}
+
+//object Service {
+//    val getUserList: APIService by lazy {
+//
+//        val okHttpClient = OkHttpClient.Builder().connectTimeout(500, TimeUnit.SECONDS)
+//                .readTimeout(500, TimeUnit.SECONDS)
+//                .build();
+//        Retrofit.Builder()
+//                .client(okHttpClient)
+//                .baseUrl("https://api.github.com")
+//                .addConverterFactory(GsonConverterFactory.create())
+//                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+//                .build()
+//                .create(APIService::class.java)
+//    }
+//}
+
+
+fun main(args: Array<String>) {
+    val body = Retrofit.Builder().baseUrl("https://api.github.com").addConverterFactory(GsonConverterFactory.create()).build().create(APIService::class.java).readUserInfo().execute().body()
+
+    if (body != null) {
+        for (item in body) {
+            print(item.arter_url + "__" + item.name)
+        }
+    }
+}

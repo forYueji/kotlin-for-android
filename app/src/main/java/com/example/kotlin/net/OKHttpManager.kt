@@ -48,7 +48,7 @@ class OKHttpManager() {
      */
     fun initOKHttp() {
         if (null == mOkHttpClient) {
-            mOkHttpClient = OkHttpClient().newBuilder().build();
+            mOkHttpClient = OkHttpClient().newBuilder().build()
         }
 
         if (null == mRetrofit) {

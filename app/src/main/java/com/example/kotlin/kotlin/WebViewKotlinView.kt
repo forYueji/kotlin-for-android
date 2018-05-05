@@ -7,8 +7,8 @@ import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
-import com.example.huangyaping.yhwebtest.R
-import com.example.kotlin.base.BaseLayout
+import com.example.kotlin.R
+import com.example.core.base.BaseLayout
 import com.example.kotlin.view.BaseWebView
 
 

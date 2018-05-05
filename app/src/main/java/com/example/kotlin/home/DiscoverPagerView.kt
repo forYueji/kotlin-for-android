@@ -1,8 +1,8 @@
 package com.example.kotlin.home
 
 import android.content.Context
-import com.example.huangyaping.yhwebtest.R
-import com.example.kotlin.base.BaseLayout
+import com.example.kotlin.R
+import com.example.core.base.BaseLayout
 
 /**
  * Created by hyp on 2018/3/28.

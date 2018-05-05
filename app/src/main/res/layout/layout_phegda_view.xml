@@ -32,7 +32,7 @@
 
     </LinearLayout>
 
-    <com.example.huangyaping.yhwebtest.view.BaseWebView
+    <com.example.kotlin.view.BaseWebView
         android:id="@+id/webview_main_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

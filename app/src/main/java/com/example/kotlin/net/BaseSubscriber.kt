@@ -1,5 +1,6 @@
 package com.example.kotlin.net
 
+import com.example.kotlin.L
 import com.example.kotlin.base.BaseResult
 import rx.Subscriber
 
@@ -48,6 +49,7 @@ abstract class BaseSubscriber<T> : Subscriber<BaseResult<T>>() {
      * The [Observable] will not call this method if it calls [.onError].
      */
     override fun onCompleted() {
+        L.i("onCompleted")
     }
 
     /**
@@ -61,6 +63,7 @@ abstract class BaseSubscriber<T> : Subscriber<BaseResult<T>>() {
      * the exception encountered by the Observable
      */
     override fun onError(e: Throwable?) {
+        L.i("onError")
     }
 
     abstract fun onSuccess(bean: BaseResult<T>?)

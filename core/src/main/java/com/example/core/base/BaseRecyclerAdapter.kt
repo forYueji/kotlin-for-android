@@ -1,8 +1,7 @@
-package com.example.kotlin.base
+package com.example.core.base
 
 import android.content.Context
 import android.support.v7.widget.RecyclerView
-import android.view.LayoutInflater
 import android.view.ViewGroup
 
 /**
@@ -17,7 +16,7 @@ import android.view.ViewGroup
  * <p>Company: </p>
  */
 abstract class BaseRecyclerAdapter<M, H : RecyclerView.ViewHolder>(
-        var context: Context, var list: List<M>) : RecyclerView.Adapter<H>() {
+        var context: Context, var mList: List<M>) : RecyclerView.Adapter<H>() {
 
     /**
      * Called when RecyclerView needs a new [ViewHolder] of the given type to represent
@@ -50,7 +49,7 @@ abstract class BaseRecyclerAdapter<M, H : RecyclerView.ViewHolder>(
      * @return The total number of items in this adapter.
      */
     override fun getItemCount(): Int {
-        return if (null == list) 0 else list!!.size
+        return if (null == mList) 0 else mList!!.size
     }
 
     /**

@@ -1,29 +1,21 @@
-package com.example.kotlin.base
+package com.example.core.base
 
 import android.support.v4.view.PagerAdapter
 import android.view.View
 import android.view.ViewGroup
+import com.example.core.base.BaseLayout
 
 /**
  * Created by hyp on 2018/3/28.
- *
- *
- *
+
  * Title:
- *
- *
- *
+
  * Description:
  *
- *
- *
  * Copyright: Copyright (c) 2017
- *
- *
- *
+
  * Company:
  */
-
 class BasePagerAdapter(private val mList: List<BaseLayout>?) : PagerAdapter() {
 
     override fun getCount(): Int {
@@ -35,15 +27,12 @@ class BasePagerAdapter(private val mList: List<BaseLayout>?) : PagerAdapter() {
     }
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
-        val childAt = container.getChildAt(position)
-        if (childAt == null) {
-            val pager = mList!![position]
-            val parent = pager.parent as ViewGroup
-            parent?.removeAllViews()
-            container.addView(pager)
-        }
-        return mList!![position]
+        val childAt = mList!!.get(position)
+        container.addView(childAt)
+        return childAt
     }
 
-    override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {}
+    override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {
+        container.removeView(mList!!.get(position))
+    }
 }

@@ -2,6 +2,7 @@ package com.example.kotlin
 
 import android.app.Application
 import com.example.kotlin.net.OKHttpManager
+import com.squareup.picasso.Picasso
 
 /**
  * Created by hyp on 2018/3/28.

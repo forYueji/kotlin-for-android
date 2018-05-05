@@ -1,8 +1,8 @@
 package com.example.huangyaping.yhwebtest.home
 
 import android.content.Context
-import com.example.huangyaping.yhwebtest.R
-import com.example.kotlin.base.BaseLayout
+import com.example.kotlin.R
+import com.example.core.base.BaseLayout
 import com.example.kotlin.user.UserProfile
 
 /**

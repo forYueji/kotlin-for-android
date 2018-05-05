@@ -1,4 +1,4 @@
-package com.example.kotlin.base
+package com.example.core.base
 
 import android.support.v7.widget.RecyclerView
 import android.view.View

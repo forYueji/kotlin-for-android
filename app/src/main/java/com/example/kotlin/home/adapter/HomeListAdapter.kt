@@ -5,10 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import com.example.huangyaping.yhwebtest.R
-import com.example.huangyaping.yhwebtest.home.bean.HomeListData
-import com.example.kotlin.base.BaseRecyclerAdapter
-import com.example.kotlin.base.BaseRecyclerViewHolder
+import com.example.kotlin.R
+import com.example.core.base.BaseRecyclerAdapter
+import com.example.core.base.BaseRecyclerViewHolder
+import com.example.kotlin.home.bean.HomeListData
 import com.lidroid.xutils.view.annotation.ViewInject
 
 /**
@@ -77,7 +77,7 @@ class HomeListAdapter(context: Context, list: List<HomeListData>) :
      */
     override fun onBindViewHolder(holder: HomeListRecycler, position: Int) {
 
-        holder.mItemTextView.setText(list.get(position).msg)
+        holder.mItemTextView.setText(mList.get(position).msg)
     }
 
 }

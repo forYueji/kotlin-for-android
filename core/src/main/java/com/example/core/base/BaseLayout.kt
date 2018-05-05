@@ -1,4 +1,4 @@
-package com.example.kotlin.base
+package com.example.core.base
 
 import android.content.Context
 import android.os.Handler
@@ -8,6 +8,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import android.widget.LinearLayout
+import com.example.core.base.view.HeaderView
 import com.lidroid.xutils.ViewUtils
 
 /**
@@ -33,6 +35,8 @@ abstract class BaseLayout(mContext: Context?) : FrameLayout(mContext) {
      */
     private var mContentView: View? = null
 
+    private var mHeaderView: HeaderView? = null
+
     /**
      * 布局填充器
      */
@@ -48,12 +52,12 @@ abstract class BaseLayout(mContext: Context?) : FrameLayout(mContext) {
      */
     init {
         if (mContext != null) {
-            init(mContext)
+            initLayout(mContext)
         }
     }
 
-    fun init(context: Context) {
-        mContext = context;
+    fun initLayout(context: Context) {
+        mContext = context
         mInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater?
 
         initContentView()
@@ -63,44 +67,6 @@ abstract class BaseLayout(mContext: Context?) : FrameLayout(mContext) {
         initData()
 
         invalidate()
-    }
-
-    private fun initContentView() : Unit {
-        /**
-         * 当前容器
-         */
-        var mContentFrameLayout = FrameLayout(mContext)
-
-        /**
-         * content params
-         */
-        var mContentLayoutParams: ViewGroup.LayoutParams = ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
-
-        /**
-         * Toast params
-         */
-        var mToastLayoutParams: ViewGroup.LayoutParams = ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-
-
-        mContentView = mInflater!!.inflate(layoutId, this, false)
-
-        /**
-         * add content view
-         */
-        ViewUtils.inject(this, mContentView)
-        mContentFrameLayout.addView(mContentView, mContentLayoutParams)
-
-        /**
-         * add toast view
-         */
-        mToastView = ToastViewLayout(mContext)
-        ViewUtils.inject(this, mToastView)
-        mContentFrameLayout.addView(mToastView, mToastLayoutParams)
-
-        addView(mContentFrameLayout)
-
     }
 
     /**
@@ -118,6 +84,60 @@ abstract class BaseLayout(mContext: Context?) : FrameLayout(mContext) {
      */
     abstract fun initData()
 
+    private fun initContentView() {
+        /**
+         * 当前父容器
+         */
+        var mFatherFrameLayout = FrameLayout(mContext)
+
+        var mContentLayout = LinearLayout(mContext)
+        mContentLayout.orientation = LinearLayout.VERTICAL
+
+        /**
+         * content params
+         */
+        var mContentLayoutParams: ViewGroup.LayoutParams = ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+
+        var mHeaderLayoutParams: FrameLayout.LayoutParams = FrameLayout.LayoutParams(
+                LayoutParams.MATCH_PARENT, dip2px(mContext!!, 44f)
+        )
+
+        /**
+         * Toast params
+         */
+        var mToastLayoutParams: ViewGroup.LayoutParams = ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+
+        mHeaderView = HeaderView(mContext!!)
+
+        mContentView = mInflater!!.inflate(layoutId, this, false)
+
+        mContentLayout.addView(mHeaderView, mHeaderLayoutParams)
+        mContentLayout.addView(mContentView, mContentLayoutParams)
+
+        /**
+         * add content view
+         */
+        ViewUtils.inject(this, mContentView)
+
+        mFatherFrameLayout.addView(mContentLayout, mContentLayoutParams)
+
+        /**
+         * add toast view
+         */
+        mToastView = ToastViewLayout(mContext)
+        ViewUtils.inject(this, mToastView)
+        mFatherFrameLayout.addView(mToastView, mToastLayoutParams)
+
+        addView(mFatherFrameLayout)
+
+    }
+
+    fun setTitle(msg: String) {
+        mHeaderView!!.setTitle(msg)
+    }
+
     /**
      * Toast view
      */
@@ -129,11 +149,12 @@ abstract class BaseLayout(mContext: Context?) : FrameLayout(mContext) {
         override fun handleMessage(msg: Message?): Boolean {
 
             var action = msg?.what
+            var message: String = msg!!.obj as String
 
             when (action) {
-                SHOW_TOAST_FLAG -> ""
+                SHOW_TOAST_FLAG -> showToast(message)
 
-                CANCEL_TOAST_FLAG -> ""
+                CANCEL_TOAST_FLAG -> cancelToast()
             }
             return false
         }
@@ -170,5 +191,10 @@ abstract class BaseLayout(mContext: Context?) : FrameLayout(mContext) {
      */
     fun cancelToast() {
         mToastView!!.cancelToast()
+    }
+
+    fun dip2px(context: Context, dpValue: Float): Int {
+        val scale = context.resources.displayMetrics.density
+        return (dpValue * scale + 0.5f).toInt()
     }
 }
